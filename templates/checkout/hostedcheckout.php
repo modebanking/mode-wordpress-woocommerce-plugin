@@ -26,12 +26,10 @@
         const data = {
           'amount': '<? echo $order->total ?>',
           'currency': '<? echo $order->currency ?>',
-          'orderRef': Date.now(),
-          'statementDescriptor': '<? echo $order->order_key ?>',
-          'description': '<? echo $order->order_key ?>'
+          'statementDescriptor': '<? echo get_bloginfo("name") ?>',
+          'description': '<? echo get_bloginfo("name") ?>',
+          'orderRef': '<? echo $order->order_key ?>',
         }
-
-        console.log(data, 'data')
 
         const { signature } = await $.ajax({
           method: 'POST',
@@ -40,15 +38,14 @@
           data: JSON.stringify(data),
           dataType: 'json'
         })
-        console.log(signature)
 
-        document.write(`
+        $('.woocommerce').append(`
           <mode-dropin-ui
-            mid="607ee348bdbf7b336347e3d2"
+            mid="<? echo get_option('mode_merchant_id') ?>"
             amount="${data.amount}"
             currency="${data.currency}"
-            order-ref="${data.order_ref}"
-            statement-descriptor="${data.statement_descriptor}"
+            order-ref="${data.orderRef}"
+            statement-descriptor="${data.statementDescriptor}"
             description="${data.description}"
             payment-signature="${signature}"
           >
@@ -58,8 +55,24 @@
           </div>
         `)
 
-        const handleSuccess = () => {
-          document.getElementById('success').style.display = 'block'
-        }
+        const pollForSuccess = (response) =>
+          setTimeout(async () => {
+            await $.ajax({
+              method: 'POST',
+              url: '/wp-json/mode/v1/check-payment',
+              data: JSON.stringify({
+                orderRef: data.orderRef
+              }),
+              success: ({ status }) => {
+                if (status !== 'processing') {
+                  pollForSuccess()
+                } else {
+                  window.location.href = '/checkout/order-received'
+                }
+              }
+            })
+          }, 800)
+
+      pollForSuccess()
       })(jQuery)
     </script>

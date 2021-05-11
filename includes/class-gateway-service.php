@@ -772,6 +772,7 @@ class Mode_GatewayService {
 
 		$options = array(
 			'http' => array(
+				'ignore_errors' => true,
 				'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
 				'method'  => 'POST',
 				'content' => http_build_query($data)
@@ -782,25 +783,31 @@ class Mode_GatewayService {
 		$result = json_decode(file_get_contents($this->authUrl, false, $context), true);
 
 		if ($result === FALSE) {
-			return print_r('Throw in here it ded');
+			return _e('Couldn\'t validate credentials. Try again.');
 		}
 
-		$data = array('url' => 'https://3afc1eeb5fbe.ngrok.io/mode/v1/webhook');
+		update_option('mode_auth_token', $result['access_token']);
+		update_option('mode_merchant_id', get_option('woocommerce_mode_gateway_settings')['merchantid']);
+		update_option('mode_client_id', get_option('woocommerce_mode_gateway_settings')['clientid']);
+		update_option('mode_secret_id', get_option('woocommerce_mode_gateway_settings')['secretid']);
+
+		$data = array('url' => get_site_url().'/wp-json/mode/v1/set-callback');
+
 		$options = array(
 			'http' => array(
+				'ignore_errors' => true,
 				'header'  => array(
-					'Content-Type: application/json\r\n',
-					'Authorization: Bearer '.$result['access_token']."\r\n"
+					'Content-Type: application/json',
+					'Authorization: Bearer '.get_option("mode_auth_token")
 				),
 				'method'  => 'POST',
-				'content' => http_build_query($data)
+				'content' => json_encode($data)
 			)
 		);
 
-		add_option('mode_auth_token', $result['access_token']);
-
 		$context = stream_context_create($options);
 		$result = file_get_contents($this->callbackUrl, false, $context);
+
 		return $result;
 	}
 

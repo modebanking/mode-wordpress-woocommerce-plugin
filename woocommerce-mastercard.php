@@ -85,6 +85,13 @@ class WC_Mode {
 				'callback' => [ $this, 'rest_route_payment_signature_callback' ]
 			) );
 		} );
+
+		add_action( 'rest_api_init', function () {
+			register_rest_route( 'mode', '/v1/check-payment', array(
+				'methods'  => 'POST',
+				'callback' => [ $this, 'rest_route_check_payment_callback' ]
+			) );
+		} );
 	}
 
 	/**
@@ -95,7 +102,29 @@ class WC_Mode {
 	 * @throws \Http\Client\Exception
 	 */
 	public function rest_route_set_callback( $request ) {
-		// set options here
+		header('Content-Type: application/json');
+
+		$orderArray = json_decode($request->get_body(), true);
+
+		$orderid = wc_get_order_id_by_order_key($orderArray['orderRef']);
+		$order = new WC_Order($orderid);
+
+		if ($orderArray['status'] === 'SUCCESSFUL') {
+			$order->update_status('processing', 'Paid via Mode Gateway');
+		}
+
+		return json_decode($request->get_body());
+	}
+
+	public function rest_route_check_payment_callback( $request ) {
+		header('Content-Type: application/json');
+		$orderArray = json_decode($request->get_body(), true);
+
+		$orderid = wc_get_order_id_by_order_key($orderArray['orderRef']);
+		$order = new WC_Order($orderid);
+
+		$status = $order->get_status();
+		return array('status' => $status);
 	}
 
 	public function rest_route_payment_signature_callback( $request ) {
@@ -114,7 +143,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://bkfo7vhbme.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/sign', false, $context));
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/sign', false, $context));
 		return $result;
 	}
 
