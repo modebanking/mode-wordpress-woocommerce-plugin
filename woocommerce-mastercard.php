@@ -128,6 +128,21 @@ class WC_Mode {
 	}
 
 	public function rest_route_payment_signature_callback( $request ) {
+		$data = array('grant_type' => 'client_credentials', 'client_id' => 'M0P54nmcfg6hZkLXrfIyeYAeoyKcxHnt', 'client_secret' => 'Hl5NHgCqOiop9x7QyknTwNF6XfTwd6f993kUTOptI52Wv1aMDG1WX2nPiaa1hxHF', 'audience' => 'https://merchants.modeapp.com');
+
+		$options = array(
+			'http' => array(
+				'ignore_errors' => true,
+				'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'POST',
+				'content' => http_build_query($data)
+			)
+		);
+
+		$context = stream_context_create($options);
+		$result = json_decode(file_get_contents($this->authUrl, false, $context), true);
+		update_option('mode_auth_token', $result['access_token']);
+
 		$responseObj = $request->get_body();
 
 		$options = array(
