@@ -140,11 +140,10 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents($this->authUrl, false, $context), true);
+		$result = json_decode(file_get_contents('https://dev-mode.eu.auth0.com/oauth/token', false, $context), true);
 		update_option('mode_auth_token', $result['access_token']);
 
 		$responseObj = $request->get_body();
-
 		$options = array(
 			'http' => array(
 				'ignore_errors' => true,

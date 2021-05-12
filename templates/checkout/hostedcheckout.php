@@ -20,7 +20,7 @@
 * @var Mode_Gateway $gateway
 * @var WC_Abstract_Order $order
 */ ?>
-    <script src="https://widget.paywithmode.com/mode-dropin-ui.min.js"></script>
+    <script src="https://staging-widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
     <script type="text/javascript">
       (async function ($) {
         const data = {
@@ -71,7 +71,7 @@
                 }
               }
             })
-          }, 800)
+          }, 1500)
 
       pollForSuccess()
       })(jQuery)
