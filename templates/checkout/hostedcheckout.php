@@ -23,7 +23,7 @@
     <script src="https://staging-widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
     <script type="text/javascript">
       (async function ($) {
-        const data = {
+        var data = {
           'amount': '<? echo $order->total ?>',
           'currency': '<? echo $order->currency ?>',
           'statementDescriptor': '<? echo get_bloginfo("name") ?>',
@@ -31,7 +31,7 @@
           'orderRef': '<? echo $order->order_key ?>',
         }
 
-        const { signature } = await $.ajax({
+        var { signature } = await $.ajax({
           method: 'POST',
           crossDomain: true,
           url: '/wp-json/mode/v1/payment-signature',
@@ -49,14 +49,10 @@
             description="${data.description}"
             payment-signature="${signature}"
           >
-          </mode-dropin-ui>
-          <div id="success" style="display: none">
-            Yay, you've paid!
-          </div>
-        `)
+          </mode-dropin-ui>`)
 
-        const pollForSuccess = (response) =>
-          setTimeout(async () => {
+        var pollForSuccess = function (response) {
+          setTimeout(async function () {
             await $.ajax({
               method: 'POST',
               url: '/wp-json/mode/v1/check-payment',
@@ -72,6 +68,7 @@
               }
             })
           }, 1500)
+        }
 
       pollForSuccess()
       })(jQuery)
