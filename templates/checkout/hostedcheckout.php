@@ -28,8 +28,8 @@
           'currency': '<? echo $order->currency ?>',
           'statementDescriptor': '<? echo get_bloginfo("name") ?>',
           'description': '<? echo get_bloginfo("name") ?>',
-          'orderRef': '<? echo $order->order_key ?>',
-        }
+          'orderRef': '<? echo $order->order_key ?>'
+        };
 
         var { signature } = await $.ajax({
           method: 'POST',
@@ -37,7 +37,7 @@
           url: '/wp-json/mode/v1/payment-signature',
           data: JSON.stringify(data),
           dataType: 'json'
-        })
+        });
 
         $('.woocommerce').append(`
           <mode-dropin-ui
@@ -49,7 +49,7 @@
             description="${data.description}"
             payment-signature="${signature}"
           >
-          </mode-dropin-ui>`)
+          </mode-dropin-ui>`);
 
         var pollForSuccess = function (response) {
           setTimeout(async function () {
@@ -59,17 +59,17 @@
               data: JSON.stringify({
                 orderRef: data.orderRef
               }),
-              success: ({ status }) => {
-                if (status !== 'processing') {
-                  pollForSuccess()
+              success: async function (result) {
+                if (result.status !== 'processing') {
+                  pollForSuccess();
                 } else {
-                  window.location.href = '/checkout/order-received'
+                  window.location.href = '/checkout/order-received';
                 }
               }
-            })
-          }, 1500)
-        }
+            });
+          }, 1500);
+        };
 
-      pollForSuccess()
+      pollForSuccess();
       })(jQuery)
     </script>
