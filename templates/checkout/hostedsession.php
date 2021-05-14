@@ -27,11 +27,6 @@
 <style id="antiClickjack">body{display:none !important;}</style>
 
 <form class="mpgs_hostedsession wc-payment-form" action="<?php echo $gateway->get_payment_return_url( $order->get_id() ) ?>" method="post">
-
-    <div class="payment_box">
-        <?php $cc_form->payment_fields(); ?>
-    </div>
-
     <input type="hidden" name="session_id" value="" />
     <input type="hidden" name="session_version" value="" />
     <input type="hidden" name="check_3ds_enrollment" value="" />

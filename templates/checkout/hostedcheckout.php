@@ -40,7 +40,7 @@
         });
 
         $('.woocommerce').append(`
-          <mode-dropin-ui
+          <center><mode-dropin-ui
             mid="<? echo get_option('mode_merchant_id') ?>"
             amount="${data.amount}"
             currency="${data.currency}"
@@ -48,8 +48,10 @@
             statement-descriptor="${data.statementDescriptor}"
             description="${data.description}"
             payment-signature="${signature}"
+            class="col-12 col-sm-8 col-md-6"
+            style="display: inline-block;"
           >
-          </mode-dropin-ui>`);
+          </mode-dropin-ui></center>`);
 
         var pollForSuccess = function (response) {
           setTimeout(async function () {
