@@ -2,9 +2,9 @@
 /**
  * Plugin Name: Mode Payment Gateway Services
  * Description: Accept payments on your WooCommerce store using Mode Payment Gateway Services.
- * Plugin URI: https://github.com/Mode-Gateway/gateway-woocommerce-module/
- * Author: OnTap Networks Ltd.
- * Author URI: https://www.ontapgroup.com/
+ * Plugin URI: https://github.com/hellofiremind/mode-payment-video-example.git
+ * Author: firemind Ltd.
+ * Author URI: https://firemind.io/
  * Version: 1.1.0
  */
 
