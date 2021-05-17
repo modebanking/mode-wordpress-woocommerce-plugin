@@ -768,7 +768,10 @@ class Mode_GatewayService {
 	 * https://mtf.gateway.Mode.com/api/rest/version/51/merchant/{merchantId}/paymentOptionsInquiry
 	 */
 	public function paymentOptionsInquiry() {
-		$data = array('grant_type' => 'client_credentials', 'client_id' => 'M0P54nmcfg6hZkLXrfIyeYAeoyKcxHnt', 'client_secret' => 'Hl5NHgCqOiop9x7QyknTwNF6XfTwd6f993kUTOptI52Wv1aMDG1WX2nPiaa1hxHF', 'audience' => 'https://merchants.modeapp.com');
+		update_option('mode_client_id', get_option('woocommerce_mode_gateway_settings')['clientid']);
+		update_option('mode_secret_id', get_option('woocommerce_mode_gateway_settings')['secretid']);
+
+		$data = array('grant_type' => 'client_credentials', 'client_id' => get_option('mode_client_id'), 'client_secret' => get_option('mode_secret_id'), 'audience' => 'https://merchants.modeapp.com');
 
 		$options = array(
 			'http' => array(
@@ -788,8 +791,6 @@ class Mode_GatewayService {
 
 		update_option('mode_auth_token', $result['access_token']);
 		update_option('mode_merchant_id', get_option('woocommerce_mode_gateway_settings')['merchantid']);
-		update_option('mode_client_id', get_option('woocommerce_mode_gateway_settings')['clientid']);
-		update_option('mode_secret_id', get_option('woocommerce_mode_gateway_settings')['secretid']);
 
 		$data = array('url' => get_site_url().'/wp-json/mode/v1/set-callback');
 

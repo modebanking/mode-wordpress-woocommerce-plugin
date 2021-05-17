@@ -128,7 +128,7 @@ class WC_Mode {
 	}
 
 	public function rest_route_payment_signature_callback( $request ) {
-		$data = array('grant_type' => 'client_credentials', 'client_id' => 'M0P54nmcfg6hZkLXrfIyeYAeoyKcxHnt', 'client_secret' => 'Hl5NHgCqOiop9x7QyknTwNF6XfTwd6f993kUTOptI52Wv1aMDG1WX2nPiaa1hxHF', 'audience' => 'https://merchants.modeapp.com');
+		$data = array('grant_type' => 'client_credentials', 'client_id' => get_option('mode_client_id'), 'client_secret' => get_option('mode_secret_id'), 'audience' => 'https://merchants.modeapp.com');
 
 		$options = array(
 			'http' => array(
@@ -140,7 +140,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://dev-mode.eu.auth0.com/oauth/token', false, $context), true);
+		$result = json_decode(file_get_contents('https://auth.modeapp.com/oauth/token', false, $context), true);
 		update_option('mode_auth_token', $result['access_token']);
 
 		$responseObj = $request->get_body();
