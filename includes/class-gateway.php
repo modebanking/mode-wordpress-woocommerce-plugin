@@ -46,10 +46,10 @@ class Mode_Gateway extends WC_Payment_Gateway {
 	 */
 	public function __construct() {
 		$this->id                 = self::ID;
-		$this->title              = __( 'Mode Payment Processing', 'mode' );
-		$this->method_title       = __( 'Mode Payment Processing', 'mode' );
+		$this->title              = __( 'Pay with Mode', 'mode' );
+		$this->method_title       = __( 'Pay with Mode', 'mode' );
 		$this->has_fields         = true;
-		$this->method_description = __( 'Accept payments on your WooCommerce store using Mode Payment Gateway Services.',
+		$this->method_description = __( 'Accept payments on your WooCommerce store using the Mode Payment Gateway.',
 			'mode' );
 
 		$this->init_form_fields();
