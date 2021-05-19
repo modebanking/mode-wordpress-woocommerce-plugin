@@ -23,12 +23,22 @@
     <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
     <script type="text/javascript">
       (async function ($) {
+        <? $items = $order->get_items();
+          $orderList = array();
+
+          foreach( $items as $item_id => $item ) {
+            array_push($orderList, $item->get_name().' x '.$item->get_quantity());
+          }
+
+          $orderItems = join(', ', $orderList);
+        ?>
+
         var data = {
           'amount': '<? echo $order->total ?>',
           'currency': '<? echo $order->currency ?>',
           'statementDescriptor': '<? echo $order->order_key ?>',
-          'description': '<? echo get_bloginfo("name") ?>',
-          'orderRef': '<? echo get_bloginfo("name") ?>'
+          'description': '<? echo $orderItems ?>',
+          'orderRef': '<? echo $orderItems ?>'
         };
 
         var { signature } = await $.ajax({
