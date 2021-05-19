@@ -106,11 +106,11 @@ class WC_Mode {
 
 		$orderArray = json_decode($request->get_body(), true);
 
-		$orderid = wc_get_order_id_by_order_key($orderArray['orderRef']);
+		$orderid = wc_get_order_id_by_order_key($orderArray['statementDescriptor']);
 		$order = new WC_Order($orderid);
 
 		if ($orderArray['status'] === 'SUCCESSFUL') {
-			$order->update_status('processing', 'Paid via Mode Gateway');
+			$order->update_status('processing', 'Paid via Pay with Mode Gateway');
 		}
 
 		return json_decode($request->get_body());
@@ -120,7 +120,7 @@ class WC_Mode {
 		header('Content-Type: application/json');
 		$orderArray = json_decode($request->get_body(), true);
 
-		$orderid = wc_get_order_id_by_order_key($orderArray['orderRef']);
+		$orderid = wc_get_order_id_by_order_key($orderArray['statementDescriptor']);
 		$order = new WC_Order($orderid);
 
 		$status = $order->get_status();
@@ -213,7 +213,7 @@ class WC_Mode {
 		//
 		// array_unshift( $links, '<a href="https://www.ontapgroup.com/uk/helpdesk/ticket/">' . __( 'Support', 'Mode' ) . '</a>' );
 		// array_unshift( $links, '<a href="http://wiki.ontapgroup.com/display/MPGS">' . __( 'Docs', 'Mode' ) . '</a>' );
-		array_unshift( $links, '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=mpgs_gateway' ) . '">' . __( 'Settings', 'Mode' ) . '</a>' );
+		array_unshift( $links, '<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=mode_gateway' ) . '">' . __( 'Settings', 'Mode' ) . '</a>' );
 
 		return $links;
 	}

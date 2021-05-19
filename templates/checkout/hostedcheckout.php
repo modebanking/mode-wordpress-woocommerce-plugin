@@ -26,9 +26,9 @@
         var data = {
           'amount': '<? echo $order->total ?>',
           'currency': '<? echo $order->currency ?>',
-          'statementDescriptor': '<? echo get_bloginfo("name") ?>',
+          'statementDescriptor': '<? echo $order->order_key ?>',
           'description': '<? echo get_bloginfo("name") ?>',
-          'orderRef': '<? echo $order->order_key ?>'
+          'orderRef': '<? echo get_bloginfo("name") ?>'
         };
 
         var { signature } = await $.ajax({
@@ -59,7 +59,7 @@
               method: 'POST',
               url: '/wp-json/mode/v1/check-payment',
               data: JSON.stringify({
-                orderRef: data.orderRef
+                statementDescriptor: data.statementDescriptor
               }),
               success: async function (result) {
                 if (result.status !== 'processing') {
