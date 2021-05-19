@@ -5,7 +5,7 @@
  * Plugin URI: https://github.com/hellofiremind/mode-payment-video-example.git
  * Author: firemind Ltd.
  * Author URI: https://firemind.io/
- * Version: 1.1.0
+ * Version: 1.5.0
  */
 
 /**
