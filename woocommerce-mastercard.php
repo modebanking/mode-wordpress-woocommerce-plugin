@@ -106,7 +106,7 @@ class WC_Mode {
 
 		$orderArray = json_decode($request->get_body(), true);
 
-		$orderid = wc_get_order_id_by_order_key($orderArray['statementDescriptor']);
+		$orderid = wc_get_order_id_by_order_key($orderArray['orderRef']);
 		$order = new WC_Order($orderid);
 
 		if ($orderArray['status'] === 'SUCCESSFUL') {
@@ -120,7 +120,7 @@ class WC_Mode {
 		header('Content-Type: application/json');
 		$orderArray = json_decode($request->get_body(), true);
 
-		$orderid = wc_get_order_id_by_order_key($orderArray['statementDescriptor']);
+		$orderid = wc_get_order_id_by_order_key($orderArray['orderRef']);
 		$order = new WC_Order($orderid);
 
 		$status = $order->get_status();
