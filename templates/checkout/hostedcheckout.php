@@ -36,8 +36,8 @@
         var data = {
           'amount': '<? echo $order->total ?>',
           'currency': '<? echo $order->currency ?>',
-          'statementDescriptor': '<? echo get_bloginfo("name") ?>',
           'description': '<? echo $orderItems ?>',
+          'statementDescriptor': '<? echo get_bloginfo("name") ?>',
           'orderRef': '<? echo $order->order_key ?>'
         };
 
