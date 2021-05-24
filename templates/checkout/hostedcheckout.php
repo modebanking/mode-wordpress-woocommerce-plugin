@@ -20,7 +20,7 @@
 * @var Mode_Gateway $gateway
 * @var WC_Abstract_Order $order
 */ ?>
-    <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
+    <script src="https://staging-widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
     <script type="text/javascript">
       (async function ($) {
         <? $items = $order->get_items();
@@ -64,7 +64,7 @@
           </mode-dropin-ui></center>`);
 
         var pollForSuccess = function (response) {
-          setTimeout(async function () {
+          var timeout = setTimeout(async function () {
             await $.ajax({
               method: 'POST',
               url: '/wp-json/mode/v1/check-payment',
@@ -75,7 +75,10 @@
                 if (result.status !== 'processing') {
                   pollForSuccess();
                 } else {
-                  window.location.href = '/checkout/order-received';
+                  clearTimeout(timeout);
+                  setTimeout(async function () {
+                    window.location.href = '/checkout/order-received';
+                  }, 30000);
                 }
               }
             });
