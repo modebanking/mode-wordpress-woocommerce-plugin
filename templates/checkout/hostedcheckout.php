@@ -78,7 +78,7 @@
                   clearTimeout(timeout);
                   setTimeout(async function () {
                     window.location.href = '/checkout/order-received';
-                  }, 30000);
+                  }, 5000);
                 }
               }
             });
