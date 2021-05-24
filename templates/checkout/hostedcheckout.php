@@ -20,7 +20,7 @@
 * @var Mode_Gateway $gateway
 * @var WC_Abstract_Order $order
 */ ?>
-    <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
+    <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js?noButton=true"></script>
     <script type="text/javascript">
       (async function ($) {
         <? $items = $order->get_items();
@@ -58,6 +58,7 @@
             statement-descriptor="${data.statementDescriptor}"
             description="${data.description}"
             payment-signature="${signature}"
+            noButton="true"
             class="col-12 col-sm-8 col-md-6"
             style="display: inline-block;"
           >
