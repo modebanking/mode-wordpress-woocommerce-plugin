@@ -771,7 +771,7 @@ class Mode_GatewayService {
 		update_option('mode_client_id', get_option('woocommerce_mode_gateway_settings')['clientid']);
 		update_option('mode_secret_id', get_option('woocommerce_mode_gateway_settings')['secretid']);
 
-		$data = array('grant_type' => 'client_credentials', 'client_id' => get_option('mode_client_id'), 'client_secret' => get_option('mode_secret_id'), 'audience' => 'https://merchants.modeapp.com');
+		$data = array('grant_type' => 'client_credentials', 'client_id' => get_option('mode_client_id'), 'client_secret' => get_option('mode_secret_id'), 'audience' => 'https://modeforbusiness.com');
 
 		$options = array(
 			'http' => array(

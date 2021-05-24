@@ -128,7 +128,7 @@ class WC_Mode {
 	}
 
 	public function rest_route_payment_signature_callback( $request ) {
-		$data = array('grant_type' => 'client_credentials', 'client_id' => get_option('mode_client_id'), 'client_secret' => get_option('mode_secret_id'), 'audience' => 'https://merchants.modeapp.com');
+		$data = array('grant_type' => 'client_credentials', 'client_id' => get_option('mode_client_id'), 'client_secret' => get_option('mode_secret_id'), 'audience' => 'https://modeforbusiness.com');
 
 		$options = array(
 			'http' => array(
