@@ -22,6 +22,7 @@ class Mode_Payment_Gateway_CC extends WC_Payment_Gateway_CC
 	 * Outputs fields for entering credit card information.
 	 */
 	public function form() {
+		echo '<p>hello world</p>';
 		wp_enqueue_script( 'wc-credit-card-form' );
 
 		$fields = array();
