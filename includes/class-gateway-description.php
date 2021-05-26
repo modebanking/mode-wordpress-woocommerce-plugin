@@ -9,7 +9,7 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 		echo '<div>';
 			echo '<center>'; ?>
 			<img src="<? echo plugin_dir_url( __FILE__ ).'assets/logo.svg' ?>">
-			<? echo '<h4>You\'re almost there!</h4>';
+			<? echo '<h4>You\'re nearly there!</h4>';
 				echo '<p>After clicking "Place Order" you will use the Mode App to complete your purchase ⚡.</p>';
 			echo '</center>';
 		echo '</div>';
