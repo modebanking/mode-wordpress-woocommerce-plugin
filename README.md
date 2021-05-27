@@ -1,6 +1,8 @@
 # Pay with Mode - WooCommerce/WordPress Plugin
 
-Welcome to Pay with Mode. This README will encompass all elements of the plugin, including how to set it up, configure it and run with it.
+Welcome to Pay with Mode. This README will encompass all elements of the plugin, including how to set it up, configure the plugin and run the plugin.
+
+**Version:** See tagged release
 
 ## Installation 🚧
 
@@ -38,3 +40,13 @@ Welcome to Pay with Mode. This README will encompass all elements of the plugin,
 
 ## Contact ✉️
 
+- Pending discussion to see who'd be contactable
+
+## Error Checking 🔥
+
+- Errors typically aren't pushed to the front-end where a user can see.
+- This is unless the error is from WordPress, in which WordPress will handle errors itself.
+
+## Plugin Characteristics 🌩️
+
+- N/A
