@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Mode Payment Gateway Services
  * Description: Accept payments on your WooCommerce store using Mode Payment Gateway Services.
- * Plugin URI: https://github.com/hellofiremind/mode-payment-video-example.git
+ * Plugin URI: https://github.com/modebanking/mode-wordpress-woocommerce-plugin.git
  * Author: firemind Ltd.
  * Author URI: https://firemind.io/
- * Version: 1.2.1
+ * Version: 1.2.2
  */
 
 /**
