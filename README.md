@@ -14,9 +14,9 @@ Welcome to Pay with Mode. This README will encompass all elements of the plugin,
 
 **Alternatively, you can follow the below process**
 
-1. Follow steps 1-3 above
+1. Follow steps 1-2 above
 
-2. Extract the ZIP
+2. Extract the ZIP that you downloaded
 
 3. Go to your FTP server and upload the extracted plugin folder into the **wp-content/plugins** directory
 
