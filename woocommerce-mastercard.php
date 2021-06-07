@@ -176,10 +176,6 @@ class WC_Mode {
 		$order = new WC_Order($orderid);
 
 		$paymentId = $order->get_meta('mode_paymentid');
-		$getUserIdData = array(
-			'paymentId' => $paymentId
-		);
-
 		$options = array(
 			'http' => array(
 				'ignore_errors' => true,
@@ -187,19 +183,20 @@ class WC_Mode {
 					'Content-Type: application/json',
 					'Authorization: Bearer '.get_option('mode_auth_token')
 				),
-				'method'  => 'POST',
-				'content' => json_encode($getUserIdData)
+				'method'  => 'GET'
 			)
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/refund', false, $context));
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/'.$paymentId, false, $context));
 
 		$requestDataRefund = array(
 			'userId' => $result['userId'],
 			'paymentId' => $paymentId,
-			'currency' => $order->get_currency(),
-			'amount' => $orderArray['amount']
+			'amount' => array(
+				'value' => $orderArray['amount'],
+				'currency' => $order->get_currency()
+			)
 		);
 
 		$options = array(
@@ -215,7 +212,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/refund', false, $context));
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/refunds', false, $context));
 
 		// $status = $order->get_status();
 		// return array('status' => $status);

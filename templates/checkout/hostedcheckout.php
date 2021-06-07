@@ -20,7 +20,7 @@
 * @var Mode_Gateway $gateway
 * @var WC_Abstract_Order $order
 */ ?>
-    <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
+    <script src="https://staging-widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
     <script type="text/javascript">
       (async function ($) {
         <? $items = $order->get_items();
@@ -49,7 +49,7 @@
           dataType: 'json'
         });
 
-        $('.woocommerce').append(`
+        var oof = $('.woocommerce').append(`
           <center><mode-dropin-ui
             mid="<? echo get_option('mode_merchant_id') ?>"
             amount="${data.amount}"
@@ -64,8 +64,10 @@
           >
           </mode-dropin-ui></center>`);
 
+          console.log(oof);
+
         <?
-          $order->update_meta_data('mode_paymentid', 'my defo unique pay id goes here'); // Add payment ID for future use
+          $order->update_meta_data('mode_paymentid', 'my defo unique pay id goes here'); // Add payment ID for future use (however i manage to get it)
         ?>
 
         var pollForSuccess = function (response) {
