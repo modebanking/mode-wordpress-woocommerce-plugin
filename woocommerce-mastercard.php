@@ -92,6 +92,13 @@ class WC_Mode {
 				'callback' => [ $this, 'rest_route_check_payment_callback' ]
 			) );
 		} );
+
+		add_action( 'rest_api_init', function () {
+			register_rest_route( 'mode', '/v1/refund-payment', array(
+				'methods'  => 'POST',
+				'callback' => [ $this, 'rest_route_refund_payment_callback' ]
+			) );
+		} );
 	}
 
 	/**
@@ -110,7 +117,7 @@ class WC_Mode {
 		$order = new WC_Order($orderid);
 
 		if ($orderArray['status'] === 'SUCCESSFUL') {
-			$order->update_status('processing', 'Paid via Pay with Mode Gateway');
+			$order->update_status('processing', 'Paid with Mode Gateway.');
 		}
 
 		return json_decode($request->get_body());
@@ -159,6 +166,59 @@ class WC_Mode {
 		$context = stream_context_create($options);
 		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/sign', false, $context));
 		return $result;
+	}
+
+	public function rest_route_refund_payment_callback( $request ) {
+		header('Content-Type: application/json');
+		$orderArray = json_decode($request->get_body(), true);
+
+		$orderid = wc_get_order_id_by_order_key($orderArray['orderRef']);
+		$order = new WC_Order($orderid);
+
+		$paymentId = $order->get_meta('mode_paymentid');
+		$getUserIdData = array(
+			'paymentId' => $paymentId
+		);
+
+		$options = array(
+			'http' => array(
+				'ignore_errors' => true,
+				'header'  => array(
+					'Content-Type: application/json',
+					'Authorization: Bearer '.get_option('mode_auth_token')
+				),
+				'method'  => 'POST',
+				'content' => json_encode($getUserIdData)
+			)
+		);
+
+		$context = stream_context_create($options);
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/refund', false, $context));
+
+		$requestDataRefund = array(
+			'userId' => $result['userId'],
+			'paymentId' => $paymentId,
+			'currency' => $order->get_currency(),
+			'amount' => $orderArray['amount']
+		);
+
+		$options = array(
+			'http' => array(
+				'ignore_errors' => true,
+				'header'  => array(
+					'Content-Type: application/json',
+					'Authorization: Bearer '.get_option('mode_auth_token')
+				),
+				'method'  => 'POST',
+				'content' => json_encode($requestDataRefund)
+			)
+		);
+
+		$context = stream_context_create($options);
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/refund', false, $context));
+
+		// $status = $order->get_status();
+		// return array('status' => $status);
 	}
 
 	/**

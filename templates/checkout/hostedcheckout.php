@@ -64,6 +64,10 @@
           >
           </mode-dropin-ui></center>`);
 
+        <?
+          $order->update_meta_data('mode_paymentid', 'my defo unique pay id goes here'); // Add payment ID for future use
+        ?>
+
         var pollForSuccess = function (response) {
           var timeout = setTimeout(async function () {
             await $.ajax({
