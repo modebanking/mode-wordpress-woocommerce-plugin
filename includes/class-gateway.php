@@ -32,9 +32,9 @@ class Mode_Gateway extends WC_Payment_Gateway {
 	const HC_TYPE_REDIRECT = 'redirect';
 	const HC_TYPE_MODAL = 'modal';
 
-	const AUTH_URL = 'https://dev-mode.eu.auth0.com/oauth/token';
-	const API_CALLBACK_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/callbacks';
-	const API_SIGNATURE_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/sign';
+	const AUTH_URL = 'https://auth.modeapp.com/oauth/token';
+	const API_CALLBACK_URL = 'https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants/callbacks';
+	const API_SIGNATURE_URL = 'https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/sign';
 
 	/**
 	 * @var Mode_GatewayService
@@ -108,7 +108,6 @@ class Mode_Gateway extends WC_Payment_Gateway {
 	 */
 	public function process_refund($orderId, $amount = NULL, $reason = '') {
 		print_r($orderId, $amount);
-		// throw new Error($orderId);
 
 		$order = new WC_Order($orderId);
 
@@ -126,7 +125,7 @@ class Mode_Gateway extends WC_Payment_Gateway {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/'.$paymentId, false, $context));
+		$result = json_decode(file_get_contents('https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/'.$paymentId, false, $context));
 		$userId = $result->userId;
 		$currency = $order->get_currency();
 
@@ -152,10 +151,18 @@ class Mode_Gateway extends WC_Payment_Gateway {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/refunds', false, $context));
 
-		$order->add_order_note('Refund successful. Refunded '.$amount.' '.$currency.' to Mode user '.$userId);
-		return array('refunded' => true, 'userId' => $userId, 'paymentId' => $paymentId);
+		$getFileRequest = file_get_contents('https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/refunds', false, $context);
+		$result = json_decode($getFileRequest);
+		$order->add_order_note(json_encode($getFileRequest));
+
+		if ($result->error) {
+			$order->add_order_note('Refund unsuccessful. This user has already been refunded.');
+			return false;
+		} else {
+			$order->add_order_note('Refund successful. Refunded '.$amount.' '.$currency.' to Mode user '.$userId);
+			return true;
+		}
 	}
 
 	/**

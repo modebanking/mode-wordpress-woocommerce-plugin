@@ -149,7 +149,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://dev-mode.eu.auth0.com/oauth/token', false, $context), true);
+		$result = json_decode(file_get_contents('https://auth.modeapp.com/oauth/token', false, $context), true);
 		update_option('mode_auth_token', $result['access_token']);
 
 		$responseObj = $request->get_body();
@@ -166,7 +166,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/sign', false, $context));
+		$result = json_decode(file_get_contents('https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/sign', false, $context));
 		return $result;
 	}
 
