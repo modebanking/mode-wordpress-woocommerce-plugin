@@ -117,6 +117,8 @@ class WC_Mode {
 		$order = new WC_Order($orderid);
 
 		if ($orderArray['status'] === 'SUCCESSFUL') {
+			$order->update_meta_data('mode_paymentid', $orderArray['paymentId']);
+			$order->add_order_note('Mode Gateway Payment ID: '.$orderArray['paymentId']);
 			$order->update_status('processing', 'Paid with Mode Gateway.');
 		}
 
@@ -164,7 +166,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/sign', false, $context));
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/sign', false, $context));
 		return $result;
 	}
 
@@ -188,10 +190,11 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/'.$paymentId, false, $context));
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/'.$paymentId, false, $context));
+		$userId = $result['userId'];
 
 		$requestDataRefund = array(
-			'userId' => $result['userId'],
+			'userId' => $userId,
 			'paymentId' => $paymentId,
 			'amount' => array(
 				'value' => $orderArray['amount'],
@@ -212,10 +215,9 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/refunds', false, $context));
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/refunds', false, $context));
 
-		// $status = $order->get_status();
-		// return array('status' => $status);
+		return array('refunded' => true, 'userId' => $userId, 'paymentId' => $paymentId);
 	}
 
 	/**

@@ -49,7 +49,7 @@
           dataType: 'json'
         });
 
-        var oof = $('.woocommerce').append(`
+        $('.woocommerce').append(`
           <center><mode-dropin-ui
             mid="<? echo get_option('mode_merchant_id') ?>"
             amount="${data.amount}"
@@ -63,12 +63,6 @@
             style="display: inline-block;"
           >
           </mode-dropin-ui></center>`);
-
-          console.log(oof);
-
-        <?
-          $order->update_meta_data('mode_paymentid', 'my defo unique pay id goes here'); // Add payment ID for future use (however i manage to get it)
-        ?>
 
         var pollForSuccess = function (response) {
           var timeout = setTimeout(async function () {

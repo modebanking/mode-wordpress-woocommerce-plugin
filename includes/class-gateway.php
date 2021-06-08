@@ -33,8 +33,8 @@ class Mode_Gateway extends WC_Payment_Gateway {
 	const HC_TYPE_MODAL = 'modal';
 
 	const AUTH_URL = 'https://auth.modeapp.com/oauth/token';
-	const API_CALLBACK_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/callbacks';
-	const API_SIGNATURE_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/sign';
+	const API_CALLBACK_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/production/merchants/callbacks';
+	const API_SIGNATURE_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/sign';
 
 	/**
 	 * @var Mode_GatewayService
