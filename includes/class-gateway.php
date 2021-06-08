@@ -32,9 +32,9 @@ class Mode_Gateway extends WC_Payment_Gateway {
 	const HC_TYPE_REDIRECT = 'redirect';
 	const HC_TYPE_MODAL = 'modal';
 
-	const AUTH_URL = 'https://auth.modeapp.com/oauth/token';
-	const API_CALLBACK_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/production/merchants/callbacks';
-	const API_SIGNATURE_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/sign';
+	const AUTH_URL = 'https://dev-mode.eu.auth0.com/oauth/token';
+	const API_CALLBACK_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/callbacks';
+	const API_SIGNATURE_URL = 'https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/sign';
 
 	/**
 	 * @var Mode_GatewayService
@@ -52,6 +52,10 @@ class Mode_Gateway extends WC_Payment_Gateway {
 		$this->has_fields         = true;
 		$this->method_description = __( 'Accept payments on your WooCommerce store using the Mode Payment Gateway.',
 			'mode' );
+
+		$this->supports = array(
+			'refunds'
+		);
 
 		$this->init_form_fields();
 		$this->init_settings();
@@ -92,6 +96,66 @@ class Mode_Gateway extends WC_Payment_Gateway {
 			$this->get_webhook_url(),
 			$loggingLevel
 		);
+	}
+
+		/**
+	 * @param int $order_id
+	 * @param float|null $amount
+	 * @param string $reason
+	 *
+	 * @return bool
+	 * @throws \Http\Client\Exception
+	 */
+	public function process_refund($orderId, $amount = NULL, $reason = '') {
+		print_r($orderId, $amount);
+		// throw new Error($orderId);
+
+		$order = new WC_Order($orderId);
+
+		$paymentId = $order->get_meta('mode_paymentid');
+
+		$options = array(
+			'http' => array(
+				'ignore_errors' => true,
+				'header'  => array(
+					'Content-Type: application/json',
+					'Authorization: Bearer '.get_option('mode_auth_token')
+				),
+				'method'  => 'GET'
+			)
+		);
+
+		$context = stream_context_create($options);
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/'.$paymentId, false, $context));
+		$userId = $result->userId;
+		$currency = $order->get_currency();
+
+		$requestDataRefund = array(
+			'userId' => $userId,
+			'paymentId' => $paymentId,
+			'amount' => array(
+				'value' => $amount,
+				'currency' => $currency
+			)
+		);
+
+		$options = array(
+			'http' => array(
+				'ignore_errors' => true,
+				'header'  => array(
+					'Content-Type: application/json',
+					'Authorization: Bearer '.get_option('mode_auth_token')
+				),
+				'method'  => 'POST',
+				'content' => json_encode($requestDataRefund)
+			)
+		);
+
+		$context = stream_context_create($options);
+		$result = json_decode(file_get_contents('https://4krsfra6y4.execute-api.eu-west-2.amazonaws.com/qa1/merchants/payments/refunds', false, $context));
+
+		$order->add_order_note('Refund successful. Refunded '.$amount.' '.$currency.' to Mode user '.$userId);
+		return array('refunded' => true, 'userId' => $userId, 'paymentId' => $paymentId);
 	}
 
 	/**
@@ -171,27 +235,6 @@ class Mode_Gateway extends WC_Payment_Gateway {
 		}
 
 		$this->display_errors();
-	}
-
-	/**
-	 * @param int $order_id
-	 * @param float|null $amount
-	 * @param string $reason
-	 *
-	 * @return bool
-	 * @throws \Http\Client\Exception
-	 */
-	public function process_refund( $order_id, $amount = null, $reason = '' ) {
-		$order  = new WC_Order( $order_id );
-		$result = $this->service->refund( $order_id, (string) time(), $amount, $order->get_currency() );
-		$order->add_order_note( sprintf(
-			__( 'Mode registered refund %s %s (ID: %s)', 'Mode' ),
-			$result['transaction']['amount'],
-			$result['transaction']['currency'],
-			$result['transaction']['id']
-		) );
-
-		return true;
 	}
 
 	/**
