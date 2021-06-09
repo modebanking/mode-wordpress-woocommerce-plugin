@@ -77,7 +77,7 @@
               method: 'POST',
               url: '/wp-json/mode/v1/check-payment',
               data: JSON.stringify({
-                orderRef: data.orderRef
+                orderRef: "<? echo $data['orderRef'] ?>"
               }),
               success: async function (result) {
                 if (result.status !== 'processing') {
