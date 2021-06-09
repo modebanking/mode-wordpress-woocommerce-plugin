@@ -17,7 +17,7 @@ use Monolog\Formatter\FormatterInterface;
  * Sampling handler
  *
  * A sampled event stream can be useful for logging high frequency events in
- * a production environment where you only need an idea of what is happening
+ * a qa1 environment where you only need an idea of what is happening
  * and are not concerned with capturing every occurrence. Since the decision to
  * handle or not handle a particular event is determined randomly, the
  * resulting sampled log is not guaranteed to contain 1/N of the events that
