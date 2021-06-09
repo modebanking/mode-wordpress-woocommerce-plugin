@@ -53,6 +53,10 @@ class Mode_Gateway extends WC_Payment_Gateway {
 		$this->method_description = __( 'Accept payments on your WooCommerce store using the Mode Payment Gateway.',
 			'mode' );
 
+		$this->supports = array(
+			'refunds'
+		);
+
 		$this->init_form_fields();
 		$this->init_settings();
 
@@ -92,6 +96,71 @@ class Mode_Gateway extends WC_Payment_Gateway {
 			$this->get_webhook_url(),
 			$loggingLevel
 		);
+	}
+
+		/**
+	 * @param int $order_id
+	 * @param float|null $amount
+	 * @param string $reason
+	 *
+	 * @return bool
+	 * @throws \Http\Client\Exception
+	 */
+	public function process_refund($orderId, $amount = NULL, $reason = '') {
+		$order = new WC_Order($orderId);
+
+		$paymentId = $order->get_meta('mode_paymentid');
+
+		$options = array(
+			'http' => array(
+				'ignore_errors' => true,
+				'header'  => array(
+					'Content-Type: application/json',
+					'Authorization: Bearer '.get_option('mode_auth_token')
+				),
+				'method'  => 'GET'
+			)
+		);
+
+		$context = stream_context_create($options);
+		$result = json_decode(file_get_contents('https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/'.$paymentId, false, $context));
+		$userId = $result->userId;
+		$currency = $order->get_currency();
+		$currencySymbol = get_woocommerce_currency_symbol($currency);
+
+		$requestDataRefund = array(
+			'userId' => $userId,
+			'paymentId' => $paymentId,
+			'amount' => array(
+				'value' => $amount,
+				'currency' => $currency
+			)
+		);
+
+		$options = array(
+			'http' => array(
+				'ignore_errors' => true,
+				'header'  => array(
+					'Content-Type: application/json',
+					'Authorization: Bearer '.get_option('mode_auth_token')
+				),
+				'method'  => 'POST',
+				'content' => json_encode($requestDataRefund)
+			)
+		);
+
+		$context = stream_context_create($options);
+
+		$getFileRequest = file_get_contents('https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants/payments/refunds', false, $context);
+		$result = json_decode($getFileRequest);
+
+		if ($result->error) {
+			$order->add_order_note('Refund unsuccessful. This user has already been refunded.');
+			return false;
+		} else {
+			$order->add_order_note('Refund successful. Refunded '.$currencySymbol.$amount.' to Mode user '.$userId);
+			return true;
+		}
 	}
 
 	/**
@@ -171,27 +240,6 @@ class Mode_Gateway extends WC_Payment_Gateway {
 		}
 
 		$this->display_errors();
-	}
-
-	/**
-	 * @param int $order_id
-	 * @param float|null $amount
-	 * @param string $reason
-	 *
-	 * @return bool
-	 * @throws \Http\Client\Exception
-	 */
-	public function process_refund( $order_id, $amount = null, $reason = '' ) {
-		$order  = new WC_Order( $order_id );
-		$result = $this->service->refund( $order_id, (string) time(), $amount, $order->get_currency() );
-		$order->add_order_note( sprintf(
-			__( 'Mode registered refund %s %s (ID: %s)', 'Mode' ),
-			$result['transaction']['amount'],
-			$result['transaction']['currency'],
-			$result['transaction']['id']
-		) );
-
-		return true;
 	}
 
 	/**

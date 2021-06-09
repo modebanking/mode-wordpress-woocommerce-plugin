@@ -92,6 +92,13 @@ class WC_Mode {
 				'callback' => [ $this, 'rest_route_check_payment_callback' ]
 			) );
 		} );
+
+		add_action( 'rest_api_init', function () {
+			register_rest_route( 'mode', '/v1/refund-payment', array(
+				'methods'  => 'POST',
+				'callback' => [ $this, 'rest_route_refund_payment_callback' ]
+			) );
+		} );
 	}
 
 	/**
@@ -110,7 +117,9 @@ class WC_Mode {
 		$order = new WC_Order($orderid);
 
 		if ($orderArray['status'] === 'SUCCESSFUL') {
-			$order->update_status('processing', 'Paid via Pay with Mode Gateway');
+			$order->update_meta_data('mode_paymentid', $orderArray['paymentId']);
+			$order->add_order_note('Mode Gateway Payment ID: '.$orderArray['paymentId']);
+			$order->update_status('processing', 'Paid with Mode Gateway.');
 		}
 
 		return json_decode($request->get_body());
