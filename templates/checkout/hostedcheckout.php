@@ -20,7 +20,7 @@
 * @var Mode_Gateway $gateway
 * @var WC_Abstract_Order $order
 */ ?>
-    <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
+    <script src="https://staging-widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
     <script type="text/javascript">
       (async function ($) {
         <? $items = $order->get_items();
@@ -31,34 +31,41 @@
           }
 
           $orderItems = join(', ', $orderList);
+
+          $data = array(
+            'amount' => $order->total,
+            'currency' => $order->currency,
+            'description' => $orderItems,
+            'statementDescriptor' => get_bloginfo("name"),
+            'orderRef' => $order->order_key
+          );
+
+          $options = array(
+            'http' => array(
+              'ignore_errors' => true,
+              'header'  => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer '.get_option('mode_auth_token')
+              ),
+              'method'  => 'POST',
+              'content' => json_encode($data)
+            )
+          );
+
+          $context = stream_context_create($options);
+          $result = json_decode(file_get_contents(get_site_url().'/wp-json/mode/v1/payment-signature', false, $context));
         ?>
-
-        var data = {
-          'amount': '<? echo $order->total ?>',
-          'currency': '<? echo $order->currency ?>',
-          'description': '<? echo $orderItems ?>',
-          'statementDescriptor': '<? echo get_bloginfo("name") ?>',
-          'orderRef': '<? echo $order->order_key ?>'
-        };
-
-        var { signature } = await $.ajax({
-          method: 'POST',
-          crossDomain: true,
-          url: '/wp-json/mode/v1/payment-signature',
-          data: JSON.stringify(data),
-          dataType: 'json'
-        });
 
         $('.woocommerce').append(`
           <center><mode-dropin-ui
             mid="<? echo get_option('mode_merchant_id') ?>"
-            amount="${data.amount}"
-            currency="${data.currency}"
-            order-ref="${data.orderRef}"
-            statement-descriptor="${data.statementDescriptor}"
-            description="${data.description}"
+            amount="<? echo $data['amount'] ?>"
+            currency="<? echo $data['currency'] ?>"
+            order-ref="<? echo $data['orderRef'] ?>"
+            statement-descriptor="<? echo $data['statementDescriptor'] ?>"
+            description="<? echo $data['description'] ?>"
             no-button="true"
-            payment-signature="${signature}"
+            payment-signature="<? echo $result->signature ?>"
             class="col-12 col-sm-8 col-md-6"
             style="display: inline-block;"
           >
