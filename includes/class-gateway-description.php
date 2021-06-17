@@ -11,32 +11,34 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 
 		$modeLogo = plugin_dir_url( __FILE__ ).'assets/logo.svg';
 		$btcLogo = plugin_dir_url( __FILE__ ).'assets/bitcoin.svg';
-		$modeCashbackEnabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-enabled.svg'; // Change to cb-enabled.svg
-		$modeCashbackDisabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-disabled.svg'; // Change to cb-disabled.svg
+		$modeCashbackEnabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-enabled.svg';
+		$modeCashbackDisabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-disabled.svg';
 
-		print_r($order);
+		$cashbackAmount = $order->get_total() * $cashbackEnabled;
 
-		if ($cashbackEnabled) {
+		if ($cashbackEnabled !== 'absent' && $cashbackEnabled !== '0') {
 			echo '<div>';
 				echo '<center>';
 					echo '<img alt="Mode Cashback Logo" src="'.$modeCashbackEnabledLogo.'">';
 
 					echo '<div>';
-						echo '<h4>Checkout to earn '.$cbAmount.' in </h4>';
+						echo '<h4>Checkout to earn <strong>'.$cashbackAmount.'</strong> in </h4>';
 						echo '<img alt="Bitcoin Logo" src="'.$btcLogo.'">';
 					echo '</div>';
 
 					echo '<p>After clicking "Place Order" you will use the Mode App to complete your purchase and earn BTC cashback</p>';
+				echo '</center>';
+			echo '</div>';
 		} else {
 			echo '<div>';
 				echo '<center>';
 					echo '<img alt="Mode Checkout Logo" src="'.$modeCashbackDisabledLogo.'">';
 					echo '<h4>Frictionless payment at the next step</h4>';
-					echo '<p>After clicking "Place Order" you will use the Mode App to complete your purchase.</p>';
-		}
 
-			echo '</center>';
-		echo '</div>';
+					echo '<p>After clicking "Place Order" you will use the Mode App to complete your purchase.</p>';
+				echo '</center>';
+			echo '</div>';
+		}
 
 		$description .= ob_get_clean();
 		return $description;
