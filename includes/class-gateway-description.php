@@ -10,9 +10,10 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 		$android = get_option('mode_android_flag');
 
 		$modeLogo = plugin_dir_url( __FILE__ ).'assets/logo.svg';
-		$androidLogo = plugin_dir_url( __FILE__ ).'assets/logo.svg'; // Change to Android
-		$modeCashbackEnabledLogo = plugin_dir_url( __FILE__ ).'assets/logo.svg'; // Change to cb-enabled.svg
-		$modeCashbackDisabledLogo = plugin_dir_url( __FILE__ ).'assets/logo.svg'; // Change to cb-disabled.svg
+		$androidLogo = plugin_dir_url( __FILE__ ).'assets/android.svg';
+		$btcLogo = plugin_dir_url( __FILE__ ).'assets/bitcoin.svg';
+		$modeCashbackEnabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-enabled.svg'; // Change to cb-enabled.svg
+		$modeCashbackDisabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-disabled.svg'; // Change to cb-disabled.svg
 
 		print_r($order);
 
@@ -20,7 +21,12 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 			echo '<div>';
 				echo '<center>';
 					echo '<img alt="Mode Cashback Logo" src="'.$modeCashbackEnabledLogo.'">';
-					echo '<h4>Checkout to earn '.$cbAmount.' in Bitcoin</h4>';
+
+					echo '<div>';
+						echo '<h4>Checkout to earn '.$cbAmount.' in </h4>';
+						echo '<img alt="Bitcoin Logo" src="'.$btcLogo.'">';
+					echo '</div>';
+
 					echo '<p>After clicking "Place Order" you will use the Mode App to complete your purchase and earn BTC cashback</p>';
 		} else {
 			echo '<div>';
