@@ -6,18 +6,17 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 	if ($payment_id === 'mode_gateway') {
 		global $order;
 		ob_start();
-		$cb = true;
-		$android = get_option('mode_android_flag');
+
+		$cashbackEnabled = get_option('mode_merchant_cashback');
 
 		$modeLogo = plugin_dir_url( __FILE__ ).'assets/logo.svg';
-		$androidLogo = plugin_dir_url( __FILE__ ).'assets/android.svg';
 		$btcLogo = plugin_dir_url( __FILE__ ).'assets/bitcoin.svg';
 		$modeCashbackEnabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-enabled.svg'; // Change to cb-enabled.svg
 		$modeCashbackDisabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-disabled.svg'; // Change to cb-disabled.svg
 
 		print_r($order);
 
-		if ($cb) {
+		if ($cashbackEnabled) {
 			echo '<div>';
 				echo '<center>';
 					echo '<img alt="Mode Cashback Logo" src="'.$modeCashbackEnabledLogo.'">';
@@ -36,7 +35,6 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 					echo '<p>After clicking "Place Order" you will use the Mode App to complete your purchase.</p>';
 		}
 
-				echo '<img alt="Android Logo" src="'.$androidLogo.'"><h6>Android only. iOS coming soon.</h6>';
 			echo '</center>';
 		echo '</div>';
 

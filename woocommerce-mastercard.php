@@ -99,6 +99,13 @@ class WC_Mode {
 				'callback' => [ $this, 'rest_route_refund_payment_callback' ]
 			) );
 		} );
+
+		add_action( 'rest_api_init', function () {
+			register_rest_route( 'mode', '/v1/check-cashback', array(
+				'methods'  => 'POST',
+				'callback' => [ $this, 'rest_route_check_cashback' ]
+			) );
+		} );
 	}
 
 	/**
@@ -123,6 +130,22 @@ class WC_Mode {
 		}
 
 		return json_decode($request->get_body());
+	}
+
+	public function rest_route_check_cashback( $request ) {
+		$options = array(
+			'http' => array(
+				'ignore_errors' => true,
+				'header'  => array(
+					'Content-Type: application/json',
+					'Authorization: Bearer '.get_option('mode_auth_token')
+				),
+				'method'  => 'GET'
+			)
+		);
+
+		$context = stream_context_create($options);
+		return $result = json_decode(file_get_contents('https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants/cashback', false, $context));
 	}
 
 	public function rest_route_check_payment_callback( $request ) {
