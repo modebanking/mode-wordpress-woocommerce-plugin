@@ -4,7 +4,7 @@ add_filter( 'woocommerce_gateway_description', 'mode_gateway_description_fields'
 
 function mode_gateway_description_fields( $description, $payment_id ) {
 	if ($payment_id === 'mode_gateway') {
-		global $order;
+		global $woocommerce;
 		ob_start();
 
 		$cashbackEnabled = get_option('mode_merchant_cashback');
@@ -14,7 +14,7 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 		$modeCashbackEnabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-enabled.svg';
 		$modeCashbackDisabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-disabled.svg';
 
-		$cashbackAmount = $order->get_total() * $cashbackEnabled;
+		$cashbackAmount = $woocommerce->cart->get_cart_total() * $cashbackEnabled;
 
 		if ($cashbackEnabled !== 'absent' && $cashbackEnabled !== '0') {
 			echo '<div>';
