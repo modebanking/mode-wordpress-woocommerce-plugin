@@ -145,7 +145,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		return $result = json_decode(file_get_contents('https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants/cashback', false, $context));
+		return $result = json_decode(file_get_contents('https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants', false, $context));
 	}
 
 	public function rest_route_check_payment_callback( $request ) {
