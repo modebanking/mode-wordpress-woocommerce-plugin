@@ -8,6 +8,21 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 		global $woocommerce;
 		ob_start();
 
+		$data = array('grant_type' => 'client_credentials', 'client_id' => get_option('mode_client_id'), 'client_secret' => get_option('mode_secret_id'), 'audience' => 'https://merchants.modeapp.com');
+
+		$options = array(
+			'http' => array(
+				'ignore_errors' => true,
+				'header'  => "Content-Type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'POST',
+				'content' => http_build_query($data)
+			)
+		);
+
+		$context = stream_context_create($options);
+		$result = json_decode(file_get_contents('https://auth.modeapp.com/oauth/token', false, $context), true);
+		update_option('mode_auth_token', $result['access_token']);
+
 		$modeLogo = plugin_dir_url( __FILE__ ).'assets/logo.svg';
 		$btcLogo = plugin_dir_url( __FILE__ ).'assets/bitcoin.svg';
 		$modeCashbackEnabledLogo = plugin_dir_url( __FILE__ ).'assets/cb-enabled.svg';
