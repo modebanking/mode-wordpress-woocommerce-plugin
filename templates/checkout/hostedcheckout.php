@@ -23,7 +23,7 @@
     <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
     <script type="text/javascript">
       (async function ($) {
-        <? $items = $order->get_items();
+        document.write(`<? $items = $order->get_items();
           $orderList = array();
 
           foreach( $items as $item_id => $item ) {
@@ -54,7 +54,7 @@
 
           $context = stream_context_create($options);
           $result = json_decode(file_get_contents(get_site_url().'/wp-json/mode/v1/payment-signature', false, $context));
-        ?>
+        ?>`);
 
         $('.woocommerce').append(`
           <center><mode-dropin-ui
