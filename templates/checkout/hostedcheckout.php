@@ -21,8 +21,9 @@
 * @var WC_Abstract_Order $order
 */ ?>
     <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
-    <script type="text/javascript">
-      (async function ($) {
+    <? echo '<script type="text/javascript">';
+      echo '(async function ($) {';
+    ?>
         <? $items = $order->get_items();
           $orderList = array();
 
@@ -54,20 +55,19 @@
 
           $context = stream_context_create($options);
           $result = json_decode(file_get_contents(get_site_url().'/wp-json/mode/v1/payment-signature', false, $context));
-        ?>
 
-        $('.woocommerce').append(`
+        echo "$('.woocommerce').append(`
           <center><mode-dropin-ui
-            mid="<? echo get_option('mode_merchant_id') ?>"
-            amount="<? echo $data['amount'] ?>"
-            currency="<? echo $data['currency'] ?>"
-            order-ref="<? echo $data['orderRef'] ?>"
-            statement-descriptor="<? echo $data['statementDescriptor'] ?>"
-            description="<? echo $data['description'] ?>"
-            no-button="true"
-            payment-signature="<? echo $result->signature ?>"
-            class="col-12 col-sm-8 col-md-6"
-            style="display: inline-block;"
+            mid=".get_option('mode_merchant_id')."
+            amount='".$data['amount']."'
+            currency='".$data['currency']."'
+            order-ref='".$data['orderRef']."'
+            statement-descriptor='".$data['statementDescriptor']."'
+            description='".$data['description']."'
+            no-button='true'
+            payment-signature='".$result->signature."'
+            class='col-12 col-sm-8 col-md-6'
+            style='display: inline-block;'
           >
           </mode-dropin-ui></center>`);
 
@@ -77,7 +77,7 @@
               method: 'POST',
               url: '/wp-json/mode/v1/check-payment',
               data: JSON.stringify({
-                orderRef: "<? echo $data['orderRef'] ?>"
+                orderRef: '".$data['orderRef']."'
               }),
               success: async function (result) {
                 if (result.status !== 'processing') {
@@ -95,4 +95,4 @@
 
       pollForSuccess();
       })(jQuery)
-    </script>
+    </script>";
