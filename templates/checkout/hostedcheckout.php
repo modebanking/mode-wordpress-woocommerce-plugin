@@ -23,7 +23,7 @@
     <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
     <script type="text/javascript">
       (async function ($) {
-        <? $items = $order->get_items();
+        <?php $items = $order->get_items();
           $orderList = array();
 
           foreach( $items as $item_id => $item ) {
@@ -58,14 +58,14 @@
 
         $('.woocommerce').append(`
           <center><mode-dropin-ui
-            mid="<? echo get_option('mode_merchant_id') ?>"
-            amount="<? echo $data['amount'] ?>"
-            currency="<? echo $data['currency'] ?>"
-            order-ref="<? echo $data['orderRef'] ?>"
-            statement-descriptor="<? echo $data['statementDescriptor'] ?>"
-            description="<? echo $data['description'] ?>"
+            mid="<?php echo get_option('mode_merchant_id') ?>"
+            amount="<?php echo $data['amount'] ?>"
+            currency="<?php echo $data['currency'] ?>"
+            order-ref="<?php echo $data['orderRef'] ?>"
+            statement-descriptor="<?php echo $data['statementDescriptor'] ?>"
+            description="<?php echo $data['description'] ?>"
             no-button="true"
-            payment-signature="<? echo $result->signature ?>"
+            payment-signature="<?php echo $result->signature ?>"
             class="col-12 col-sm-8 col-md-6"
             style="display: inline-block;"
           >
