@@ -5,7 +5,7 @@
  * Plugin URI: https://github.com/modebanking/mode-wordpress-woocommerce-plugin.git
  * Author: firemind Ltd.
  * Author URI: https://firemind.io/
- * Version: 1.3.5
+ * Version: 1.3.6
  */
 
 /**
