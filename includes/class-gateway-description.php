@@ -77,7 +77,7 @@ add_filter( 'woocommerce_gateway_icon', 'mode_gateway_icon_fields', 20, 2 );
 function mode_gateway_icon_fields( $icon, $payment_id ) {
 	if ($payment_id === 'mode_gateway') {
 		$logoModeAccordion = plugin_dir_url( __FILE__ ).'assets/mode-accordion.svg';
-		echo '<a href="https://modeapp.com/payments-and-rewards">What is Pay with Mode?</a>';
+		echo '<a onclick="window.open(`https://modeapp.com/payments-and-rewards`, `_blank`).focus()">What is Pay with Mode?</a>';
 		echo '<img style="max-width: 20%;" alt="Mode Cashback Logo" src="'.$logoModeAccordion.'">';
 	} else {
 		echo $icon;
