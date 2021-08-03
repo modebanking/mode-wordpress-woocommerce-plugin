@@ -20,7 +20,7 @@
 * @var Mode_Gateway $gateway
 * @var WC_Abstract_Order $order
 */ ?>
-    <script src="https://staging-widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
+    <script src="https://widget.modeforbusiness.com/mode-dropin-ui.min.js"></script>
     <script type="text/javascript">
       (async function ($) {
         <?php $items = $order->get_items();

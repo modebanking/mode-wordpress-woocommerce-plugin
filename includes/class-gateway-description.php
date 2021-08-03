@@ -20,7 +20,7 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://dev-mode.eu.auth0.com/oauth/token', false, $context), true);
+		$result = json_decode(file_get_contents('https://auth.modeapp.com/oauth/token', false, $context), true);
 		update_option('mode_auth_token', $result['access_token']);
 
 		$modeLogo = plugin_dir_url( __FILE__ ).'assets/logo.svg';
@@ -40,7 +40,7 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://qa1-api.modeforbusiness.com/merchants', false, $context));
+		$result = json_decode(file_get_contents('https://api.modeforbusiness.com/merchants', false, $context));
 
 		if ($result->cashbackRatePercentage && $result->cashbackRatePercentage !== '0') {
 			$cashbackValue = (int)$result->cashbackRatePercentage;
