@@ -5,7 +5,7 @@
  * Plugin URI: https://github.com/modebanking/mode-wordpress-woocommerce-plugin.git
  * Author: firemind Ltd.
  * Author URI: https://firemind.io/
- * Version: 1.5.0
+ * Version: 1.5.1
  */
 
 /**
@@ -145,7 +145,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		return $result = json_decode(file_get_contents('https://api.modeforbusiness.com/merchants', false, $context));
+		return $result = json_decode(file_get_contents('https://qa1-api.modeforbusiness.com/merchants', false, $context));
 	}
 
 	public function rest_route_check_payment_callback( $request ) {
@@ -172,7 +172,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://auth.modeapp.com/oauth/token', false, $context), true);
+		$result = json_decode(file_get_contents('https://dev-mode.eu.auth0.com/oauth/token', false, $context), true);
 		update_option('mode_auth_token', $result['access_token']);
 
 		$responseObj = $request->get_body();
@@ -189,7 +189,7 @@ class WC_Mode {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://api.modeforbusiness.com/merchants/payments/sign', false, $context));
+		$result = json_decode(file_get_contents('https://qa1-api.modeforbusiness.com/merchants/payments/sign', false, $context));
 		return $result;
 	}
 

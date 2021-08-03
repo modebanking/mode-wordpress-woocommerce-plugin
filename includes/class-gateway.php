@@ -29,9 +29,9 @@ class Mode_Gateway extends WC_Payment_Gateway {
 	const HC_TYPE_REDIRECT = 'redirect';
 	const HC_TYPE_MODAL = 'modal';
 
-	const AUTH_URL = 'https://auth.modeapp.com/oauth/token';
-	const API_CALLBACK_URL = 'https://api.modeforbusiness.com/merchants/callbacks';
-	const API_SIGNATURE_URL = 'https://api.modeforbusiness.com/merchants/payments/sign';
+	const AUTH_URL = 'https://dev-mode.eu.auth0.com/oauth/token';
+	const API_CALLBACK_URL = 'https://qa1-api.modeforbusiness.com/merchants/callbacks';
+	const API_SIGNATURE_URL = 'https://qa1-api.modeforbusiness.com/merchants/payments/sign';
 
 	/**
 	 * @var Mode_GatewayService
@@ -46,6 +46,7 @@ class Mode_Gateway extends WC_Payment_Gateway {
 		$this->id                 = self::ID;
 		$this->title              = __( 'Pay with Mode', 'mode' );
 		$this->method_title       = __( 'Pay with Mode', 'mode' );
+		$this->order_button_text  = __( 'Proceed to Mode', 'mode' );
 		$this->has_fields         = true;
 		$this->method_description = __( 'Accept payments on your WooCommerce store using the Mode Payment Gateway.',
 			'mode' );
@@ -120,7 +121,7 @@ class Mode_Gateway extends WC_Payment_Gateway {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://api.modeforbusiness.com/merchants/payments/'.$paymentId, false, $context));
+		$result = json_decode(file_get_contents('https://qa1-api.modeforbusiness.com/merchants/payments/'.$paymentId, false, $context));
 		$userId = $result->userId;
 		$currency = $order->get_currency();
 		$currencySymbol = get_woocommerce_currency_symbol($currency);
@@ -148,7 +149,7 @@ class Mode_Gateway extends WC_Payment_Gateway {
 
 		$context = stream_context_create($options);
 
-		$getFileRequest = file_get_contents('https://api.modeforbusiness.com/merchants/payments/refunds', false, $context);
+		$getFileRequest = file_get_contents('https://qa1-api.modeforbusiness.com/merchants/payments/refunds', false, $context);
 		$result = json_decode($getFileRequest);
 
 		if ($result->error) {
