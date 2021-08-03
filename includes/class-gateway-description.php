@@ -40,7 +40,7 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 		);
 
 		$context = stream_context_create($options);
-		$result = json_decode(file_get_contents('https://hpxjxq5no8.execute-api.eu-west-2.amazonaws.com/production/merchants', false, $context));
+		$result = json_decode(file_get_contents('https://api.modeforbusiness.com/merchants', false, $context));
 
 		if ($result->cashbackRatePercentage && $result->cashbackRatePercentage !== '0') {
 			$cashbackValue = (int)$result->cashbackRatePercentage;
