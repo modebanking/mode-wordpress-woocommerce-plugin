@@ -77,9 +77,9 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 			} else {
 			echo '<div>';
 				echo '<center>';
-					echo '<img style="float: none !important; max-height: inherit! important; padding: 10px !important;" alt="Mode Checkout Logo" src="'.$modeCashbackDisabledLogo.'">';
-					echo '<h4 style="font-size: 20px; margin-top: 20px; font-family:gilroySemibold!important;">Frictionless payment at the next step</h4>';
-					echo '<p style="font-size: 16px; margin-top: 12px; font-family:gilroyRegular!important;">After clicking "Place Order" you will use the Mode App to complete your purchase.</p>';
+					echo '<img style="float: none !important; max-height: inherit !important; padding: 10px !important;" alt="Mode Checkout Logo" src="'.$modeCashbackDisabledLogo.'">';
+					echo '<h4 style="font-size: 20px; margin-top: 20px; font-family:gilroySemibold !important;">Frictionless payment at the next step</h4>';
+					echo '<p style="font-size: 16px; margin-top: 12px; font-family:gilroyRegular !important;">After clicking "Place Order" you will use the Mode App to complete your purchase.</p>';
 				echo '</center>';
 			echo '</div>';
 		}
