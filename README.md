@@ -49,6 +49,9 @@ Welcome to Pay with Mode. This README will encompass all elements of the plugin,
 
 ## Changelog
 
+v1.6.7 - README
+- Update plugin README
+
 v1.6.6 - Basket Page
 - Remove "What is Pay with Mode?" and MODE logo if there is only 1 payment gateway enabled on the website.
 
