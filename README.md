@@ -47,6 +47,11 @@ Welcome to Pay with Mode. This README will encompass all elements of the plugin,
 - Errors typically aren't pushed to the front-end where a user can see.
 - This is unless the error is from WordPress, in which WordPress will handle errors itself.
 
+## Changelog
+
+v1.6.6 - Basket Page
+- Remove "What is Pay with Mode?" and MODE logo if there is only 1 payment gateway enabled on the website.
+
 ## Plugin Characteristics 🌩️
 
 - N/A
