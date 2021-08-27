@@ -92,10 +92,15 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 add_filter( 'woocommerce_gateway_icon', 'mode_gateway_icon_fields', 20, 2 );
 
 function mode_gateway_icon_fields( $icon, $payment_id ) {
+	$available_gateways = sizeof(WC()->payment_gateways->get_available_payment_gateways());
+
 	if ($payment_id === 'mode_gateway') {
-		$logoModeAccordion = plugin_dir_url( __FILE__ ).'assets/mode-accordion.svg';
-		echo '<a onclick="window.open(`https://modeapp.com/payments-and-rewards`, `_blank`).focus()">What is Pay with Mode?</a>';
-		echo '<img style="max-width: 20%;" alt="Mode Cipashback Logo" src="'.$logoModeAccordion.'">';
+		if ($available_gateways > 1) {
+			echo '<p>'.$icon.'</p>';
+			$logoModeAccordion = plugin_dir_url( __FILE__ ).'assets/mode-accordion.svg';
+			echo '<a onclick="window.open(`https://modeapp.com/payments-and-rewards`, `_blank`).focus()">What is Pay with Mode?</a>';
+			echo '<img style="max-width: 20%;" alt="Mode Cipashback Logo" src="'.$logoModeAccordion.'">';
+		}
 	} else {
 		echo $icon;
 	}
