@@ -49,6 +49,9 @@ Welcome to Pay with Mode. This README will encompass all elements of the plugin,
 
 ## Changelog
 
+v1.6.8 - Basket Page
+- Copy changes and updated What is Pay with Mode link
+
 v1.6.7 - README
 - Update plugin README
 

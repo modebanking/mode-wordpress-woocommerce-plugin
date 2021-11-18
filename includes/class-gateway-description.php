@@ -71,15 +71,15 @@ function mode_gateway_description_fields( $description, $payment_id ) {
 						echo '<h4 style="font-size: 20px; display: inline;">Checkout to earn £'.number_format((float) $percentage, 2, ".", "").' in <img style="margin: 0 0; vertical-align: initial; display: inline;" alt="Bitcoin Logo" src="'.$btcLogo.'"> Bitcoin</h4>';
 					echo '</div>';
 
-					echo '<p style="font-size: 16px; margin-top: 12px;">After clicking "Place Order" you will use the Mode App to complete your purchase and earn BTC cashback</p>';
+					echo '<p style="font-size: 16px; margin-top: 12px;">Get up to 10&#x25; Bitcoin Cashback. Pay instantly &amp; securely with your UK bank account. Follow the steps on the next screen to pay.</p>';
 				echo '</center>';
 			echo '</div>';
 			} else {
 			echo '<div>';
 				echo '<center>';
 					echo '<img style="float: none !important; max-height: inherit !important; padding: 10px !important;" alt="Mode Checkout Logo" src="'.$modeCashbackDisabledLogo.'">';
-					echo '<h4 style="font-size: 20px; margin-top: 20px; font-family:gilroySemibold !important;">Frictionless payment at the next step</h4>';
-					echo '<p style="font-size: 16px; margin-top: 12px; font-family:gilroyRegular !important;">After clicking "Place Order" you will use the Mode App to complete your purchase.</p>';
+					echo '<h4 style="font-size: 20px; margin-top: 20px; font-family:gilroySemibold !important;">&#x26a1;&nbsp;Pay and get Bitcoin Cashback</h4>';
+					echo '<p style="font-size: 16px; margin-top: 12px; font-family:gilroyRegular !important;">Get up to 10&#x25; Bitcoin Cashback. Pay instantly &amp; securely with your UK bank account. Follow the steps on the next screen to pay.</p>';
 				echo '</center>';
 			echo '</div>';
 		}
@@ -98,7 +98,7 @@ function mode_gateway_icon_fields( $icon, $payment_id ) {
 		if ($available_gateways > 1) {
 			echo '<p>'.$icon.'</p>';
 			$logoModeAccordion = plugin_dir_url( __FILE__ ).'assets/mode-accordion.svg';
-			echo '<a onclick="window.open(`https://modeapp.com/payments-and-rewards`, `_blank`).focus()">What is Pay with Mode?</a>';
+			echo '<a onclick="window.open(`https://www.modeapp.com/pay-with-mode`, `_blank`).focus()">What is Pay with Mode?</a>';
 			echo '<img style="max-width: 20%;" alt="Mode Cipashback Logo" src="'.$logoModeAccordion.'">';
 		}
 	} else {
